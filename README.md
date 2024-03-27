@@ -52,7 +52,7 @@ package using the following information:
 | Package information                                                                                                              ||
 |:-----------------|:---------------------------------------------------------------------------------------------------------------|
 | Package          | `Paiwise.OpenExchangeRates.package`                                                                            |
-| Installation key | TBD                                                                                                            |
+| Installation key | `3Ob+jo/f2RW2r1ES7qE4aHSm5sMLSzxK6ALMy1HR1gqp9pQohcsMB+jLsaRcpZhLPdEFn7wcbroAbd1a3d16806eb110767433274ccfd8cd` |
 | More Information | TBD                                                                                                            |
 
 ## Building, Compiling & Debugging
