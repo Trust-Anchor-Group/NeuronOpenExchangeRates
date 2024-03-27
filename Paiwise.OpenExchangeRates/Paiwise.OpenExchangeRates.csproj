@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Peter Waher</Authors>
+    <Company>Trust Anchor Group AB</Company>
+    <Product>Paiwise</Product>
+    <Description>Paiwise openexchangerates.org Currency Conversion Service</Description>
+    <Copyright>Copyright © Trust Anchor Group AB 2024. All rights reserved.</Copyright>
+    <PackageIcon>Tag64x64.png</PackageIcon>
+    <PackageTags>TAG Neuron Payments Currency Conversion</PackageTags>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Paiwise.OpenExchangeRates.manifest" />
+    <None Remove="Root\OpenExchangeRates\Settings.js" />
+    <None Remove="Root\OpenExchangeRates\Settings.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Paiwise.OpenExchangeRates.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Root\OpenExchangeRates\Settings.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Root\OpenExchangeRates\Settings.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Paiwise" Version="1.3.1" />
+    <PackageReference Include="Waher.Content" Version="2.6.8" />
+    <PackageReference Include="Waher.Events" Version="1.1.3" />
+    <PackageReference Include="Waher.IoTGateway" Version="1.8.0" />
+    <PackageReference Include="Waher.Persistence" Version="1.10.1" />
+    <PackageReference Include="Waher.Runtime.Inventory" Version="1.1.5" />
+    <PackageReference Include="Waher.Runtime.Settings" Version="1.0.10" />
+    <PackageReference Include="Waher.Script" Version="2.6.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Tag64x64.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -66,5 +66,5 @@ is run with it.
 
 ### Configuring service
 §
-You configure the service via the browser, by navigating to the `/Settings/OpenExchangeRates.md` resource, and entering the requested
+You configure the service via the browser, by navigating to the `/OpenExchangeRates/Settings.md` resource, and entering the requested
 information.

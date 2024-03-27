@@ -1,0 +1,9 @@
+﻿<Module xmlns="http://waher.se/Schema/ModuleManifest.xsd">
+	<Assembly fileName="Paiwise.OpenExchangeRates.dll"/>
+	<Folder name="Root">
+		<Folder name="OpenExchangeRates">
+			<Content fileName="Settings.js"/>
+			<Content fileName="Settings.md"/>
+		</Folder>
+	</Folder>
+</Module>
