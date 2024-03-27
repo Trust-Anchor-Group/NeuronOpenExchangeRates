@@ -19,13 +19,14 @@ namespace Paiwise.OpenExchangeRates
 	{
 		#region Setup
 
-		private string apiKey;
-		private OpenExchangeRateClient client = null;
+		private static string apiKey;
+		private static int rateMaxAgeSeconds;
+		private static OpenExchangeRateClient client = null;
+
 		private Dictionary<string, CurrencySymbol> currencyDictionary;
 		private Dictionary<CaseInsensitiveString, decimal> ratesReference;
 		private CurrencySymbol[] currencies;
 		private DateTime ratesTimestamp = DateTime.MinValue;
-		private int rateMaxAgeSeconds;
 		private readonly object syncObject = new object();
 
 		/// <summary>
@@ -42,43 +43,25 @@ namespace Paiwise.OpenExchangeRates
 		/// <param name="ApiKey">API Key</param>
 		public OpenExchangeRatesService(string ApiKey)
 		{
-			this.apiKey = ApiKey;
+			apiKey = ApiKey;
 		}
 
 		/// <summary>
 		/// Current API Key
 		/// </summary>
-		public string ApiKey => this.apiKey;
-
-		/// <summary>
-		/// Sets a new API Key
-		/// </summary>
-		/// <param name="ApiKey"></param>
-		/// <returns></returns>
-		public async Task SetApiKey(string ApiKey)
-		{
-			if (this.apiKey != ApiKey)
-			{
-				this.apiKey = ApiKey;
-				await RuntimeSettings.SetAsync("Paiwise.OpenExchangeRates.ApiKey", ApiKey);
-
-				this.client = null;
-
-				await this.CheckCurrencies();
-			}
-		}
+		public string ApiKey => apiKey;
 
 		/// <summary>
 		/// Reference to the API client
 		/// </summary>
-		public OpenExchangeRateClient Client
+		public static OpenExchangeRateClient Client
 		{
 			get
 			{
-				if (this.client is null)
-					this.client = new OpenExchangeRateClient(this.apiKey);
+				if (client is null)
+					client = new OpenExchangeRateClient(apiKey);
 
-				return this.client;
+				return client;
 			}
 		}
 
@@ -91,17 +74,26 @@ namespace Paiwise.OpenExchangeRates
 		/// </summary>
 		public async Task Start()
 		{
-			this.apiKey = await RuntimeSettings.GetAsync("Paiwise.OpenExchangeRates.ApiKey", this.apiKey);
-			this.rateMaxAgeSeconds = (int)await RuntimeSettings.GetAsync("Paiwise.OpenExchangeRates.MaxAgeSeconds", 3600);
-
+			await InvalidateCurrent();
 			await this.CheckCurrencies();
 
 			Gateway.OnAfterBackup += this.Gateway_OnAfterBackup;
 		}
 
+		/// <summary>
+		/// Invalidates current settings.
+		/// </summary>
+		/// <returns></returns>
+		public static async Task InvalidateCurrent()
+		{
+			apiKey = await RuntimeSettings.GetAsync("Paiwise.OpenExchangeRates.ApiKey", apiKey);
+			rateMaxAgeSeconds = (int)await RuntimeSettings.GetAsync("Paiwise.OpenExchangeRates.MaxAgeSeconds", 3600.0);
+			client = null;
+		}
+
 		private async void Gateway_OnAfterBackup(object sender, EventArgs e)
 		{
-			if (!string.IsNullOrEmpty(this.apiKey))
+			if (!string.IsNullOrEmpty(apiKey))
 			{
 				try
 				{
@@ -116,7 +108,7 @@ namespace Paiwise.OpenExchangeRates
 
 		private async Task CheckCurrencies()
 		{
-			if (this.currencies is null && !string.IsNullOrEmpty(this.apiKey))
+			if (this.currencies is null && !string.IsNullOrEmpty(apiKey))
 				await this.LoadCurrencies();
 		}
 
@@ -124,10 +116,10 @@ namespace Paiwise.OpenExchangeRates
 		{
 			try
 			{
-				CurrencySymbol[] Currencies = await this.Client.GetCurrencies();    // Just to know what currency symbols are available.
+				CurrencySymbol[] Currencies = await Client.GetCurrencies();    // Just to know what currency symbols are available.
 				Dictionary<string, CurrencySymbol> Sorted = new Dictionary<string, CurrencySymbol>();
 
-				foreach (CurrencySymbol Symbol in this.currencies)
+				foreach (CurrencySymbol Symbol in Currencies)
 					Sorted[Symbol.Currency] = Symbol;
 
 				this.currencies = Currencies;
@@ -144,7 +136,7 @@ namespace Paiwise.OpenExchangeRates
 		/// </summary>
 		public Task Stop()
 		{
-			this.apiKey = string.Empty;
+			apiKey = string.Empty;
 			return Task.CompletedTask;
 		}
 
@@ -160,7 +152,7 @@ namespace Paiwise.OpenExchangeRates
 		{
 			return Task.FromResult(new IConfigurablePage[]
 			{
-				new ConfigurablePage("Fixer.io", "/OpenExchangeRates/Settings.md")
+				new ConfigurablePage("openexchangerates.org", "/OpenExchangeRates/Settings.md")
 			});
 		}
 
@@ -179,7 +171,7 @@ namespace Paiwise.OpenExchangeRates
 		/// <returns>How well objects of this type are supported.</returns>
 		public Grade Supports(CurrencyPair Object)
 		{
-			if (this.apiKey is null)
+			if (apiKey is null)
 				return Grade.NotAtAll;
 
 			try
@@ -215,9 +207,9 @@ namespace Paiwise.OpenExchangeRates
 		{
 			DateTime Now = DateTime.Now;
 
-			if (Now.Subtract(this.ratesTimestamp).TotalSeconds >= this.rateMaxAgeSeconds)
+			if (Now.Subtract(this.ratesTimestamp).TotalSeconds >= rateMaxAgeSeconds)
 			{
-				ExchangeRate[] Rates = await this.Client.GetLatest();
+				ExchangeRate[] Rates = await Client.GetLatest();
 
 				lock (this.syncObject)
 				{

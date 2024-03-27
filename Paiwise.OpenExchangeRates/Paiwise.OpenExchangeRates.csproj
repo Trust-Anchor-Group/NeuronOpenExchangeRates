@@ -15,15 +15,11 @@
 
   <ItemGroup>
     <None Remove="Paiwise.OpenExchangeRates.manifest" />
-    <None Remove="Root\OpenExchangeRates\Settings.js" />
     <None Remove="Root\OpenExchangeRates\Settings.md" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Paiwise.OpenExchangeRates.manifest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Root\OpenExchangeRates\Settings.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Root\OpenExchangeRates\Settings.md">
@@ -48,5 +44,9 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;C:\My Projects\IoTGateway\Utilities\Waher.Utility.Install\bin\$(ConfigurationName)\net6.0\win-x86\Waher.Utility.Install.exe&quot; -m &quot;C:\My Projects\NeuronOpenExchangeRates\Paiwise.OpenExchangeRates\bin\$(ConfigurationName)\netstandard2.0\Paiwise.OpenExchangeRates.manifest&quot; -s &quot;C:\My Projects\IoTGateway\Waher.IoTGateway.Console\bin\$(ConfigurationName)\net6.0\Waher.IoTGateway.Console.dll&quot; -d &quot;C:\ProgramData\IoT Gateway Dev&quot;&#xD;&#xA;" />
+  </Target>
 
 </Project>

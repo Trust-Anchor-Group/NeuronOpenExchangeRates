@@ -65,6 +65,40 @@ repositories in different folders, but you need to update the build events accor
 is run with it.
 
 ### Configuring service
-§
+
 You configure the service via the browser, by navigating to the `/OpenExchangeRates/Settings.md` resource, and entering the requested
 information.
+
+### Gateway.config
+
+To simplify development, once the project is cloned, add a `FileFolder` reference
+to your repository folder in your [gateway.config file](https://lab.tagroot.io/Documentation/IoTGateway/GatewayConfig.md). 
+This allows you to test and run your changes to Markdown and Javascript immediately, 
+without having to synchronize the folder contents with an external 
+host, or recompile or go through the trouble of generating a distributable software 
+package just for testing purposes. Changes you make in .NET can be applied in runtime
+if you the *Hot Reload* permits, otherwise you need to recompile and re-run the
+application again.
+
+Example of how to point a web folder to your project folder:
+
+```
+<FileFolders>
+  <FileFolder webFolder="/OpenExchangeRates" folderPath="C:\My Projects\NeuronOpenExchangeRates\Paiwise.OpenExchangeRates\Root\OpenExchangeRates"/>
+</FileFolders>
+```
+
+**Note**: Once the file folder reference is added, you need to restart the IoT Gateway service for the change to take effect.
+
+**Note 2**:  Once the gateway is restarted, the source for the files is in the new location. Any changes you make in the corresponding
+`ProgramData` subfolder will have no effect on what you see via the browser.
+
+**Note 3**: This file folder is only necessary on your developer machine, to give you real-time updates as you edit the files in your
+developer folder. It is not necessary in a production environment, as the files are copied into the correct folders when the package 
+is installed.
+
+## Reference documentation
+
+Reference documentation can be found on the following locations:
+
+* [REST API documentation](https://docs.openexchangerates.org/)
