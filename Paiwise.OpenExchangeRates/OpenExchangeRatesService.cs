@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Waher.Events;
 using Waher.IoTGateway;
@@ -27,7 +28,7 @@ namespace Paiwise.OpenExchangeRates
 		private Dictionary<CaseInsensitiveString, decimal> ratesReference;
 		private CurrencySymbol[] currencies;
 		private DateTime ratesTimestamp = DateTime.MinValue;
-		private readonly object syncObject = new object();
+		private readonly SemaphoreSlim syncObject = new SemaphoreSlim(1);
 
 		/// <summary>
 		/// Currency Converter service from openexchangerates.org.
@@ -207,13 +208,13 @@ namespace Paiwise.OpenExchangeRates
 		{
 			DateTime Now = DateTime.Now;
 
-			if (Now.Subtract(this.ratesTimestamp).TotalSeconds >= rateMaxAgeSeconds)
+			await this.syncObject.WaitAsync();
+			try
 			{
-				ExchangeRate[] Rates = await Client.GetLatest();
-
-				lock (this.syncObject)
+				if (Now.Subtract(this.ratesTimestamp).TotalSeconds >= rateMaxAgeSeconds)
 				{
 					Dictionary<CaseInsensitiveString, decimal> Sorted = new Dictionary<CaseInsensitiveString, decimal>();
+					ExchangeRate[] Rates = await Client.GetLatest();
 
 					foreach (ExchangeRate Rate in Rates)
 						Sorted[Rate.ToCurrency] = Rate.Rate;
@@ -221,10 +222,7 @@ namespace Paiwise.OpenExchangeRates
 					this.ratesReference = Sorted;
 					this.ratesTimestamp = Now;
 				}
-			}
 
-			lock (this.syncObject)
-			{
 				if (this.ratesReference.TryGetValue(FromCurrency, out decimal FromRate) &&
 					this.ratesReference.TryGetValue(ToCurrency, out decimal ToRate))
 				{
@@ -233,6 +231,10 @@ namespace Paiwise.OpenExchangeRates
 				}
 				else
 					return null;
+			}
+			finally
+			{
+				this.syncObject.Release();
 			}
 		}
 
