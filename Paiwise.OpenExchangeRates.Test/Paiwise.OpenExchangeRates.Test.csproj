@@ -18,7 +18,7 @@
     <PackageReference Include="MSTest.TestAdapter" Version="3.3.1" />
     <PackageReference Include="MSTest.TestFramework" Version="3.3.1" />
     <PackageReference Include="Waher.Persistence" Version="1.10.1" />
-    <PackageReference Include="Waher.Persistence.Files" Version="1.11.5" />
+    <PackageReference Include="Waher.Persistence.Files" Version="1.11.6" />
   </ItemGroup>
 
   <ItemGroup>
