@@ -102,7 +102,7 @@ namespace Paiwise.OpenExchangeRates
 				}
 				catch (Exception ex)
 				{
-					Log.Critical(ex);
+					Log.Exception(ex);
 				}
 			}
 		}
@@ -128,7 +128,7 @@ namespace Paiwise.OpenExchangeRates
 			}
 			catch (Exception ex)
 			{
-				Log.Critical(ex);
+				Log.Exception(ex);
 			}
 		}
 
