@@ -13,7 +13,6 @@ namespace Paiwise.OpenExchangeRates.Test
 	public class OpenExchangeRatesTests
 	{
 		private static FilesProvider? filesProvider = null;
-		private static OpenExchangeRatesService service = null;
 
 		[AssemblyInitialize]
 		public static async Task AssemblyInitialize(TestContext _)
