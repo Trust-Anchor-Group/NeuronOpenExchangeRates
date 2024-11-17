@@ -92,7 +92,7 @@ namespace Paiwise.OpenExchangeRates
 			client = null;
 		}
 
-		private async void Gateway_OnAfterBackup(object sender, EventArgs e)
+		private async Task Gateway_OnAfterBackup(object sender, EventArgs e)
 		{
 			if (!string.IsNullOrEmpty(apiKey))
 			{
