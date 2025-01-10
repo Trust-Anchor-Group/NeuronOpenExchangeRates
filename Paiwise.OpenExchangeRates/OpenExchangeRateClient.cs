@@ -50,13 +50,15 @@ namespace Paiwise.OpenExchangeRates
 
 			Uri Uri = new Uri(sb.ToString());
 
-			if (!(await InternetContent.GetAsync(Uri, new KeyValuePair<string, string>[]
+			ContentResponse Content = await InternetContent.GetAsync(Uri, new KeyValuePair<string, string>[]
 			{
 				new KeyValuePair<string, string>("Accept", "application/json"),
-			}) is Dictionary<string, object> Result))
-			{
+			});
+
+			Content.AssertOk();
+
+			if (!(Content.Decoded is Dictionary<string, object> Result))
 				throw new Exception("Unexpected response returned from openexchangerates.org.");
-			}
 
 			if (string.IsNullOrEmpty(ResponseElement))
 			{

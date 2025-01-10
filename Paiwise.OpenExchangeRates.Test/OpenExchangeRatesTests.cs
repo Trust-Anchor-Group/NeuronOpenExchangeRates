@@ -47,8 +47,11 @@ namespace Paiwise.OpenExchangeRates.Test
 		{
 			await Types.StopAllModules();
 
-			filesProvider?.Dispose();
-			filesProvider = null;
+			if (filesProvider is not null)
+			{
+				await filesProvider.DisposeAsync();
+				filesProvider = null;
+			}
 		}
 
 		[TestMethod]
@@ -109,7 +112,7 @@ namespace Paiwise.OpenExchangeRates.Test
 		[TestMethod]
 		public async Task Test_07_GetLatest_Symbols()
 		{
-			ExchangeRate[] Rates = await OpenExchangeRatesService.Client.GetLatest(new string[] { "SEK", "CLP", "USD" });
+			ExchangeRate[] Rates = await OpenExchangeRatesService.Client.GetLatest(["SEK", "CLP", "USD"]);
 
 			foreach (ExchangeRate P in Rates)
 				Console.Out.WriteLine(P.FromCurrency + " -> " + P.ToCurrency + " : " + P.Rate.ToString());

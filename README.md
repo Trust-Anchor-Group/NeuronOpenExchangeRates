@@ -9,8 +9,8 @@ The solution contains the following C# projects:
 
 | Project                          | Framework         | Description |
 |:---------------------------------|:------------------|:------------|
-| `Paiwise.OpenExchangeRates`      | .NET Standard 2.0 | Class library for communicating with openexchangerates.org, and providing currence conversion index services for the Neuron(R). |
-| `Paiwise.OpenExchangeRates.Test` | .NET 6.0          | Unit tests for the `Paiwise.OpenExchangeRates` service. |
+| `Paiwise.OpenExchangeRates`      | .NET Standard 2.1 | Class library for communicating with openexchangerates.org, and providing currence conversion index services for the Neuron(R). |
+| `Paiwise.OpenExchangeRates.Test` | .NET 8.0          | Unit tests for the `Paiwise.OpenExchangeRates` service. |
 
 ## Nugets
 
