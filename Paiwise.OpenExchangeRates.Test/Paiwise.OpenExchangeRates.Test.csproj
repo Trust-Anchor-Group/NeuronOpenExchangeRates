@@ -15,10 +15,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.9.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.9.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.10.4" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.10.4" />
     <PackageReference Include="Waher.Persistence" Version="1.15.2" />
-    <PackageReference Include="Waher.Persistence.Files" Version="1.15.1" />
+    <PackageReference Include="Waher.Persistence.Files" Version="1.15.2" />
   </ItemGroup>
 
   <ItemGroup>
