@@ -59,9 +59,7 @@ namespace Paiwise.OpenExchangeRates
 		{
 			get
 			{
-				if (client is null)
-					client = new OpenExchangeRateClient(apiKey);
-
+				client ??= new OpenExchangeRateClient(apiKey);
 				return client;
 			}
 		}
@@ -153,7 +151,8 @@ namespace Paiwise.OpenExchangeRates
 		{
 			return Task.FromResult(new IConfigurablePage[]
 			{
-				new ConfigurablePage("openexchangerates.org", "/OpenExchangeRates/Settings.md")
+				new ConfigurablePage("openexchangerates.org", "/OpenExchangeRates/Settings.md",
+					"Admin.Payments.Paiwise.OpenExchangeRates")
 			});
 		}
 
